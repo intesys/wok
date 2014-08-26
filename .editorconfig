@@ -16,6 +16,10 @@ insert_final_newline = false
 indent_style = space
 indent_size = 2
 
+[*.jade]
+indent_style = space
+indent_size = 2
+
 [*.rb]
 indent_style = space
 indent_size = 2

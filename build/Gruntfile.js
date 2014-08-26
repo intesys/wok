@@ -254,6 +254,45 @@ module.exports = function(grunt) {
 		},
 
 
+        /**
+         * Jade Template rendering Task
+         * ===============================
+         */
+        jade: {
+            html: {
+                options: {
+                    pretty : true,
+                    data: function () {
+                        var data = {};
+                        var datapath = grunt.file.expand({
+                            filter: function(src) {
+                                return grunt.file.isFile(src) && (path.extname(src) === '.json');
+                            }
+                        }, grunt.config.process('<%= paths.fixtures %>/{,*/}*.json'));
+
+                        datapath.forEach(function (file) {
+                            var filename = path.basename(file, '.json');
+                            var keyName = filename.replace(/[\-_\s]/, '').toLowerCase();
+                            data[keyName] = grunt.file.readJSON(file);
+                        });
+
+                        data.debug = true;
+                        data.config = grunt.config();
+
+                        return data;
+                    }
+                },
+                files: [{
+                    expand: true,
+                    cwd: '<%= paths.views %>/',
+                    src: ['{,partials/}*.jade', '!{,partials/}_*.*'], //render all views except those starting with `_` ala SASS
+                    dest: '<%= paths.html %>',
+                    ext: '.html'
+                }]
+            }
+        },
+
+
 		/**
 		 * Replace/remove refs to development resources
 		 * Overwrites source files
@@ -291,10 +330,10 @@ module.exports = function(grunt) {
 
 		usemin: {
 			options: {
-				assetsDirs: ['<%= paths.www %>']
-			},
-			html: ['<%= paths.usemin %>/**/<%= properties.viewmatch %>'],
-			css: ['<%= paths.css %>/{,*/}*.css']
+                assetsDirs: ['<%= paths.www %>'],
+            },
+            html: ['<%= paths.usemin %>/**/<%= properties.viewmatch %>'],
+            css: ['<%= paths.css %>/{,*/}*.css']
 		},
 
 
@@ -517,7 +556,7 @@ module.exports = function(grunt) {
 			},
 			app: {
 				files: ['<%= paths.documents %>/*.md', '<%= paths.views %>/{,*/}<%= properties.viewmatch %>', '<%= paths.fixtures %>/*.json'],
-				tasks: ['render']
+				tasks: ['<%= properties.htmlRenderEngine %>']
 			},
 			livereload: {
 				options: {
@@ -596,15 +635,14 @@ module.exports = function(grunt) {
         }
 
 
-
-		});
+	});
 
 
 	grunt.registerTask('dev',[
 		'clean',
 		'copy',
 		'compass:dev',
-		'render',
+		grunt.config('properties.htmlRenderEngine'),
 		'sassdown'
 	]);
 
@@ -615,7 +653,7 @@ module.exports = function(grunt) {
 		'copy:images',
 		'imagemin',
 		'compass:dist',
-		'render',
+		grunt.config('properties.htmlRenderEngine'),
 		'htmlrefs:dist',
 		'useminPrepare',
 		'concat',

@@ -1,0 +1,60 @@
+doctype html
+html.no-js(lang="en")
+  head
+    meta(charset="utf-8")
+    meta(http-equiv="X-UA-Compatible" content="IE=edge")
+    title
+    meta(name="description" content="")
+    //
+      This could be needed in some layouts
+      link(rel="shortcut icon" href="/images/favicon.ico" type="image/x-icon")
+      link(rel="icon" href="/images/favicon.ico" type="image/x-icon")
+    //- mobile meta (hooray!)
+    meta(name="HandheldFriendly" content="True")
+    meta(name="MobileOptimized" content="320")
+    meta(name="viewport" content="width=device-width, initial-scale=1")
+
+
+    <!-- ref:js /vendor/modernizr/modernizr.min.js -->
+    script(src="/vendor/modernizr/modernizr.js")
+    <!-- endref -->
+
+    <!-- media queries for supporting devices and IE mobile (since it's mobile first) -->
+    <!--[if (gt IE 8) | (IEMobile)]><!-->
+    <!-- build:css /stylesheets/application.min.css -->
+    <link rel="stylesheet" href="/stylesheets/application.css" />
+    <!-- endbuild -->
+    <!--<![endif]-->
+
+    <!-- Fixed width style -->
+    <!-- build:css /stylesheets/application-ie.min.css --><!--[if (lt IE 9) & (!IEMobile)]>
+    <link rel="stylesheet" href="/stylesheets/application-ie.css" type="text/css" />
+    <![endif]--><!-- endbuild -->
+
+  <!--[if lt IE 7]> <body class="lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
+  <!--[if IE 7]>    <body class="lt-ie9 lt-ie8"> <![endif]-->
+  <!--[if IE 8]>    <body class="lt-ie9"> <![endif]-->
+  <!--[if gt IE 8]><!-->
+  body
+    <!--<![endif]-->
+
+    h1 Hello World!
+
+    // build:js /javascripts/application.min.js
+    script(src="/javascripts/base/plugins.js")
+    script(src="/javascripts/application.js")
+    // endbuild
+
+    <!-- ref:remove -->
+    script.
+      (function () {
+          var w = document.createElement('script');
+          w.type = 'text/javascript';
+          w.async = true;
+          w.src = 'http://' + (location.host || 'localhost').split(':')[0] + ':#{config.hosts.devbox.ports.livereload}/livereload.js?snipver=2';
+          var s = document.getElementsByTagName('script')[0];
+          s.parentNode.insertBefore(w, s);
+      }());
+    <!-- endref -->
+
+
