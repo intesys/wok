@@ -330,7 +330,7 @@ module.exports = function(grunt) {
 
 		usemin: {
 			options: {
-                assetsDirs: ['<%= paths.www %>'],
+                assetsDirs: ['<%= paths.www %>']
             },
             html: ['<%= paths.usemin %>/**/<%= properties.viewmatch %>'],
             css: ['<%= paths.css %>/{,*/}*.css']
@@ -636,7 +636,6 @@ module.exports = function(grunt) {
 
 
 	});
-
 
 	grunt.registerTask('dev',[
 		'clean',
